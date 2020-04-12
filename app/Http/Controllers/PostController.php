@@ -21,6 +21,22 @@ class PostController extends Controller
 
     }
 
+ public function update(Request $request, $id)
+    {
+         $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required',
+]);
+         //update post
+       $post =  Post::find($id);
+       $post->title = $request->input('title');
+       $post->body = $request->input('body');
+       $post->save();
+
+        return ['message' => 'Post updated'];
+    }
+
+
     public function getPosts() {
         return Post::all();
 

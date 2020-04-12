@@ -44,6 +44,13 @@ Vue.component('CreatePost', require('./components/CreatePost.vue').default);
 //let Fire = new Vue();
 window.Fire = new Vue();
 
+import VueProgressBar from 'vue-progressbar'
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '4px'
+});
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

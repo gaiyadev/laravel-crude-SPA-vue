@@ -41,14 +41,15 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add Post</h5>
+            <h5 v-show="editMode" class="modal-title" id="exampleModalLabel">Update Post</h5>
+            <h5 v-show="!editMode" class="modal-title" id="exampleModalLabel">Add Post</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <!-- body -->
-            <form @submit.prevent="createPost">
+            <form @submit.prevent="editMode ? updatePost() : createPost() ">
               <div class="form-group">
                 <label>Title</label>
                 <input
@@ -72,7 +73,8 @@
                 <has-error :form="form" field="body"></has-error>
               </div>
 
-              <button type="submit" class="btn btn-primary">ADD</button>
+              <button v-show="editMode" type="submit" class="btn btn-primary">Update</button>
+              <button v-show="!editMode" type="submit" class="btn btn-success">ADD</button>
             </form>
           </div>
           <div class="modal-footer">
@@ -89,8 +91,10 @@
 export default {
   data() {
     return {
+      editMode: false,
       posts: {},
       form: new Form({
+        id: "",
         title: "",
         body: ""
       })
@@ -98,26 +102,53 @@ export default {
   },
 
   methods: {
+    updatePost() {
+      this.$Progress.start();
+      this.form
+        .put("api/post/" + this.form.id)
+        .then(() => {
+          this.$Progress.finish();
+          Fire.$emit("AfterUpdated");
+        })
+        .catch(() => {
+          //error
+        });
+    },
     editModal(post) {
+      this.editMode = true;
       this.form.reset();
       $("#exampleModal").modal("show");
       this.form.fill(post);
     },
     //add modal
     newModal() {
+      this.editMode = false;
       this.form.reset();
       $("#exampleModal").modal("show");
     },
     createPost() {
-      this.form.post("api/post").then(console.log("post created"));
-      $("#exampleModal").modal("hide");
+      this.$Progress.start();
+      this.form
+        .post("api/post")
+        .then(this.$Progress.finish())
+        .catch(err => {
+          console.log(err);
+        });
+      // $("#exampleModal").modal("hide");
       this.form.reset();
       Fire.$emit("AfterCreated");
     },
     loadPost() {
-      axios.get("api/post").then(({ data }) => (this.posts = data));
+      axios
+        .get("api/post")
+        .then(({ data }) => (this.posts = data))
+        .catch(err => {
+          this.$Progress.fail();
+          console.log(err);
+        });
     },
     deletePost(id) {
+      this.$Progress.start();
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -133,6 +164,7 @@ export default {
           .then(() => {
             if (result.value) {
               Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              this.$Progress.finish();
               Fire.$emit("AfterDeleted");
             }
           })
@@ -149,6 +181,9 @@ export default {
       this.loadPost();
     });
     Fire.$on("AfterDeleted", () => {
+      this.loadPost();
+    });
+    Fire.$on("AfterUpdated", () => {
       this.loadPost();
     });
   }

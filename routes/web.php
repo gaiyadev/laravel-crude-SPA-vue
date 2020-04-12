@@ -23,3 +23,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('api/post', 'PostController@store');
 Route::get('api/post', 'PostController@getPosts');
 Route::delete('api/post/{id}', 'PostController@destroy');
+Route::put('api/post/{id}', 'PostController@update');
