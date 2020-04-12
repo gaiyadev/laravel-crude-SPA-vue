@@ -8,6 +8,8 @@
       data-toggle="modal"
       data-target="#exampleModal"
     >ADD</button>
+    <alert-success :form="form" message="Your changes have been saved!"></alert-success>
+
     <table class="table">
       <thead>
         <tr>
@@ -19,11 +21,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="post in posts" :key="post.id">
           <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+          <td>{{ post.id }}</td>
+          <td>{{ post.title }}</td>
+          <td>{{ post.body }}</td>
           <td>
             <a href class="btn btn-danger">Delete</a>
             <a href class="btn btn-info">Update</a>
@@ -51,7 +53,7 @@
           </div>
           <div class="modal-body">
             <!-- body -->
-            <form>
+            <form @submit.prevent="createPost">
               <div class="form-group">
                 <label>Title</label>
                 <input
@@ -92,6 +94,7 @@
 export default {
   data() {
     return {
+      posts: {},
       form: new Form({
         title: "",
         body: ""
@@ -102,10 +105,14 @@ export default {
   methods: {
     createPost() {
       this.form.post("api/post");
+    },
+    loadPost() {
+      axios.get("api/post").then(({ data }) => (this.posts = data));
     }
   },
-  mounted() {
-    console.log("component mountes");
+
+  created() {
+    this.loadPost();
   }
 };
 </script>

@@ -11,13 +11,15 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
-import { Form, HasError, AlertError } from 'vform';
+import { Form, HasError, AlertError, AlertSuccess } from 'vform';
 
 window.Form = Form;
 
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
+Vue.component(AlertSuccess.name, AlertSuccess)
+
 
 
 /**
