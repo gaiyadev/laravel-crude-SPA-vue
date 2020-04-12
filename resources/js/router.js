@@ -1,7 +1,5 @@
-//import Vue from 'vue'
-//window.Vue = require('vue');
 
-//import Home from '../views/Home.vue'
+
 
 import VueRouter from 'vue-router'
 //Vue.use(VueRouter)

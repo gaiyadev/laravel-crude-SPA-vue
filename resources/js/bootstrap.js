@@ -11,12 +11,12 @@ Vue.use(VueRouter);
  * code may be modified to fit the specific needs of your application.
  */
 
-try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
+// try {
+//     window.Popper = require('popper.js').default;
+//     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
-} catch (e) { }
+//     require('bootstrap');
+// } catch (e) { }
 
 
 

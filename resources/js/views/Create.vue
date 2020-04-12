@@ -2,23 +2,13 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">About view Component</div>
-
-          <div class="card-body">I'm an example component.</div>
-        </div>
+        <CreatePost></CreatePost>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Foot from "./components/Foot.vue";
-
-export default {
- // name: "Foot",
-  components: {
-   ' foot': Foot
-  }
-};
+export default {};
 </script>
+<style lang="stylus" scoped></style>
