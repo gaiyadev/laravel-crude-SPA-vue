@@ -3,7 +3,7 @@
     <br />
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-lg" @click="newModal">ADD</button>
-    <alert-success :form="form" message="Your changes have been saved!"></alert-success>
+    <!-- <alert-success :form="form" message="Your changes have been saved!"></alert-success> -->
 
     <table class="table">
       <thead>
@@ -111,7 +111,7 @@ export default {
           Fire.$emit("AfterUpdated");
         })
         .catch(() => {
-          //error
+          this.$Progress.fail();
         });
     },
     editModal(post) {
@@ -130,9 +130,12 @@ export default {
       this.$Progress.start();
       this.form
         .post("api/post")
-        .then(this.$Progress.finish())
-        .catch(err => {
-          console.log(err);
+        .then(() => {
+          this.$Progress.finish;
+          this.$notification.success("Post addes successfully", { timer: 10 });
+        })
+        .catch(() => {
+          this.$Progress.fail;
         });
       // $("#exampleModal").modal("hide");
       this.form.reset();
@@ -142,9 +145,8 @@ export default {
       axios
         .get("api/post")
         .then(({ data }) => (this.posts = data))
-        .catch(err => {
+        .catch(() => {
           this.$Progress.fail();
-          console.log(err);
         });
     },
     deletePost(id) {
@@ -169,7 +171,7 @@ export default {
             }
           })
           .catch(() => {
-            Swal.fire("failed!", "Someting went wrong.", "warning");
+            //Swal.fire("failed!", "Someting went wrong.", "warning");
           });
       });
     }

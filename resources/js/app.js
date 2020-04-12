@@ -51,6 +51,32 @@ Vue.use(VueProgressBar, {
     height: '4px'
 });
 
+import VueNotification from "@kugatsu/vuenotification";
+
+// Vue.use(VueNotification, {
+//     timer: 10,
+// });
+
+Vue.use(VueNotification, {
+    timer: 10,
+    position: "topRight",
+    //title: "Vue notification",
+    error: {
+        background: "#F56565",
+        color: "white"
+    },
+    success: {
+        background: "#38A169",
+        color: "white"
+    },
+    warning: {
+        background: "#ED8936",
+        color: "white"
+    }
+});
+
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
