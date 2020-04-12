@@ -2,12 +2,7 @@
   <div>
     <br />
     <!-- Button trigger modal -->
-    <button
-      type="button"
-      class="btn btn-primary btn-lg"
-      data-toggle="modal"
-      data-target="#exampleModal"
-    >ADD</button>
+    <button type="button" class="btn btn-primary btn-lg" @click="newModal">ADD</button>
     <alert-success :form="form" message="Your changes have been saved!"></alert-success>
 
     <table class="table">
@@ -27,8 +22,8 @@
           <td>{{ post.title }}</td>
           <td>{{ post.body }}</td>
           <td>
-            <a href class="btn btn-danger">Delete</a>
-            <a href class="btn btn-info">Update</a>
+            <button class="btn btn-danger" @click="deletePost(post.id)">Delete</button>
+            <button @click="editModal(post)" class="btn btn-info">Edit</button>
           </td>
         </tr>
       </tbody>
@@ -103,16 +98,59 @@ export default {
   },
 
   methods: {
+    editModal(post) {
+      this.form.reset();
+      $("#exampleModal").modal("show");
+      this.form.fill(post);
+    },
+    //add modal
+    newModal() {
+      this.form.reset();
+      $("#exampleModal").modal("show");
+    },
     createPost() {
-      this.form.post("api/post");
+      this.form.post("api/post").then(console.log("post created"));
+      $("#exampleModal").modal("hide");
+      this.form.reset();
+      Fire.$emit("AfterCreated");
     },
     loadPost() {
       axios.get("api/post").then(({ data }) => (this.posts = data));
+    },
+    deletePost(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        //send ajax delete request
+        this.form
+          .delete("api/post/" + id)
+          .then(() => {
+            if (result.value) {
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Fire.$emit("AfterDeleted");
+            }
+          })
+          .catch(() => {
+            Swal.fire("failed!", "Someting went wrong.", "warning");
+          });
+      });
     }
   },
 
-  created() {
+  mounted() {
     this.loadPost();
+    Fire.$on("AfterCreated", () => {
+      this.loadPost();
+    });
+    Fire.$on("AfterDeleted", () => {
+      this.loadPost();
+    });
   }
 };
 </script>

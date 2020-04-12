@@ -25,4 +25,12 @@ class PostController extends Controller
         return Post::all();
 
     }
+
+     public function destroy($id)
+    {
+        $post =  Post::find($id);
+        $post->delete();
+        return ['message' => 'Post Deleted'];
+
+    }
 }

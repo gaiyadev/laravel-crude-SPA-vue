@@ -12,6 +12,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
 import { Form, HasError, AlertError, AlertSuccess } from 'vform';
+import Vue from 'vue';
 
 window.Form = Form;
 
@@ -20,7 +21,8 @@ Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component(AlertSuccess.name, AlertSuccess)
 
-
+// ES6 Modules or TypeScript
+window.Swal = require('sweetalert2');
 
 /**
  * The following block of code may be used to automatically register your
@@ -37,6 +39,10 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('foot', require('./components/Foot.vue').default);
 Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('CreatePost', require('./components/CreatePost.vue').default);
+
+//for custom event
+//let Fire = new Vue();
+window.Fire = new Vue();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
