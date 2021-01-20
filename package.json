@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "@kugatsu/vuenotification": "^1.1.4",
-        "gsap": "^3.2.6",
+        "gsap": "^3.6.0",
         "sweetalert2": "^9.10.10",
         "vform": "^1.0.1",
         "vue-progressbar": "^0.7.5",
